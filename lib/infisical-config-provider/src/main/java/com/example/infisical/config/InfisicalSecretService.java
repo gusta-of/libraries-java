@@ -3,10 +3,6 @@ package com.example.infisical.config;
 import com.infisical.sdk.InfisicalSdk;
 import com.infisical.sdk.models.Secret;
 import com.infisical.sdk.util.InfisicalException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.Nullable;
 
 import java.util.List;
@@ -16,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * Service principal para acesso a secrets do Infisical.
  *
- * <p>Auto-configurado via {@link InfisicalAutoConfiguration}.</p>
+ * <p>Registrado como bean via {@link InfisicalAutoConfiguration}.</p>
  *
  * <p>Uso típico:</p>
  * <pre>{@code
@@ -44,13 +40,11 @@ import java.util.stream.Collectors;
  *
  * @since 1.0.0
  */
-@Configuration
 public class InfisicalSecretService {
 
     private final InfisicalSdk infisicalClient;
     private final InfisicalProperties properties;
 
-    @Autowired
     public InfisicalSecretService(InfisicalSdk infisicalClient, InfisicalProperties properties) {
         this.infisicalClient = infisicalClient;
         this.properties = properties;
@@ -157,15 +151,5 @@ public class InfisicalSecretService {
             throw new IllegalStateException(
                 "infisical.project-id não configurado. Defina via application.yml ou variável de ambiente INFISICAL_PROJECT_ID");
         }
-    }
-
-    // ============================================
-    // Bean opcional para quem não quer auto-configuração completa
-    // ============================================
-
-    @Bean
-    @ConditionalOnMissingBean
-    public InfisicalSecretService infisicalSecretService(InfisicalSdk client, InfisicalProperties props) {
-        return new InfisicalSecretService(client, props);
     }
 }

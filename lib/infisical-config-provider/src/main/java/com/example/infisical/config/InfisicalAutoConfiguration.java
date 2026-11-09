@@ -53,4 +53,10 @@ public class InfisicalAutoConfiguration {
 
         return sdk;
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public InfisicalSecretService infisicalSecretService(InfisicalSdk client, InfisicalProperties props) {
+        return new InfisicalSecretService(client, props);
+    }
 }
